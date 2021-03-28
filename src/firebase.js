@@ -2,12 +2,12 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 const app = firebase.initializeApp({ 
-  apiKey: "AIzaSyA8N2XJRf6iQ2tUJT3LtzUCcVzFbtJgl2w",
-  authDomain: "orderinteams.firebaseapp.com",
-  projectId: "orderinteams",
-  storageBucket: "orderinteams.appspot.com",
-  messagingSenderId: "124756348342",
-  appId: "1:124756348342:web:3d2bc3bd1cff288cccc517",
+  apiKey: "AIzaSyCpuTti-_w9NnS-O4LFXWVlOZp6YEOe9Zg",
+  authDomain: "orders-f1805.firebaseapp.com",
+  projectId: "orders-f1805",
+  storageBucket: "orders-f1805.appspot.com",
+  messagingSenderId: "135728280874",
+  appId: "1:135728280874:web:776012b7577a67e2625a53",
 });
 
 export const auth = app.auth();
