@@ -9,6 +9,11 @@ export const CreateOrder = (props) => {
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [selectedGuests, setSelectedGuests] = useState([]);
   const [isPublic, setIsPublic] = useState(true);
+  const [isAddCustom, setIsAddCustom] = useState(false);
+  const [customRestaurant, setCustomRestaurant] = useState({
+    name: "",
+    menu: [],
+  });
 
   const customStyles = {
     content: {
@@ -28,7 +33,19 @@ export const CreateOrder = (props) => {
   };
 
   const saveOrder = () => {
-    props.createOrder(selectedRestaurant.id, selectedGuests, isPublic);
+    const restaurant = !isAddCustom ? selectedRestaurant : customRestaurant;
+    props.createOrder(restaurant, selectedGuests, isPublic);
+  };
+
+  const handleInput = (event) => {
+    setCustomRestaurant((prevState) => ({
+      ...prevState,
+      name: event.target.value,
+    }));
+  };
+
+  const canSave = () => {
+    return isAddCustom ? !customRestaurant.name : !selectedRestaurant;
   };
 
   return (
@@ -61,26 +78,40 @@ export const CreateOrder = (props) => {
             </svg>
           </div>
         </div>
-
-        <div className="row">
-          <div className="col-12">
-            <Autocomplete
-              clearOnEscape
-              onChange={onSelectItem}
-              clearOnBlur
-              id="combo-box-demo"
-              options={restaurants}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Search Restaurant"
-                  variant="outlined"
-                />
-              )}
-            />
+        {!isAddCustom && (
+          <div className="row">
+            <div className="col-12">
+              <Autocomplete
+                clearOnEscape
+                onChange={onSelectItem}
+                clearOnBlur
+                id="combo-box-demo"
+                options={restaurants}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Search Restaurant"
+                    variant="outlined"
+                  />
+                )}
+              />
+            </div>
           </div>
-        </div>
+        )}
+        {isAddCustom && (
+          <div className="row">
+            <div className="col-12">
+              Restaurant
+              <input
+                type="text"
+                className="form-control"
+                onChange={handleInput}
+                value={customRestaurant.name}
+              />
+            </div>
+          </div>
+        )}
         <br></br>
         {!isPublic && (
           <>
@@ -97,6 +128,41 @@ export const CreateOrder = (props) => {
             <br></br>
           </>
         )}
+        <div className="row">
+          <div className="col-6">
+            <div
+              className="form-check cursor-pointer"
+              onClick={() => setIsAddCustom(false)}
+            >
+              <input
+                className="form-check-input cursor-pointer"
+                type="radio"
+                checked={!isAddCustom}
+                onChange={() => {}}
+              />
+              <label className="form-check-label cursor-pointer">
+                Order from list
+              </label>
+            </div>
+          </div>
+          <div className="col-6">
+            <div
+              className="form-check cursor-pointer"
+              onClick={() => setIsAddCustom(true)}
+            >
+              <input
+                className="form-check-input cursor-pointer"
+                type="radio"
+                checked={isAddCustom}
+                onChange={() => {}}
+              />
+              <label className="form-check-label cursor-pointer">
+                Add custom item
+              </label>
+            </div>
+          </div>
+        </div>
+        <br></br>
         <div className="row">
           <div className="col-2">
             <div
@@ -131,7 +197,7 @@ export const CreateOrder = (props) => {
         <div>
           <button
             type="button"
-            disabled={!selectedRestaurant}
+            disabled={canSave()}
             className="btn btn-primary"
             onClick={saveOrder}
           >

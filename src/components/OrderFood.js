@@ -3,7 +3,6 @@ import Modal from "react-modal";
 import { Autocomplete } from "@material-ui/lab";
 import { TextField } from "@material-ui/core";
 import firebase from "firebase";
-import { restaurants } from "../restaurants";
 import { OrderStatus } from "../constants/enums";
 import { handleOnKeyDownNumeric } from "./CommonHelpers";
 const db = firebase.firestore();
@@ -21,6 +20,9 @@ export const OrderFood = (props) => {
   useEffect(() => {
     if (props.order.status !== OrderStatus.ACTIVE) {
       props.setIsOrderFood(false);
+    }
+    if (props.order.restaurant.menu.length === 0) {
+      setIsAddCustom(true);
     }
   }, [props.order]);
 
@@ -90,10 +92,6 @@ export const OrderFood = (props) => {
     props.setIsOrderFood(false);
   };
 
-  const selectedRestaurant = restaurants.find(
-    (restaurant) => restaurant.id === props.order.restaurantId
-  );
-
   const handleCustomFoodTitle = (event) => {
     setCustomFood((prevState) => ({ ...prevState, title: event.target.value }));
   };
@@ -123,7 +121,7 @@ export const OrderFood = (props) => {
       <div className="container">
         <div className="row">
           <div className="col-10">
-            <h1>{selectedRestaurant.name}</h1>
+            <h1>{props.order.restaurant.name}</h1>
           </div>
           <div
             className="col-1"
@@ -153,7 +151,7 @@ export const OrderFood = (props) => {
                 value={selectedFood}
                 clearOnBlur
                 id="combo-box-demo"
-                options={selectedRestaurant.menu}
+                options={props.order.restaurant.menu}
                 getOptionLabel={(option) =>
                   `${option.title}  ${option.price} €`
                 }

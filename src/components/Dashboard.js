@@ -98,13 +98,8 @@ const Dashboard = () => {
     }
   };
 
-  const createOrder = (
-    restaurantId,
-    selectedGuests,
-    isPublic,
-    minutes = 15
-  ) => {
-    if (!restaurantId) {
+  const createOrder = (restaurant, selectedGuests, isPublic, minutes = 15) => {
+    if (!restaurant) {
       return;
     }
     const dateNow = new Date();
@@ -118,7 +113,7 @@ const Dashboard = () => {
       author: myUserInfo,
       isPublic,
       guests: isPublic ? allUsers : selectedGuests,
-      restaurantId,
+      restaurant,
       status: OrderStatus.ACTIVE,
       companyId: myUserInfo.companyId,
     };

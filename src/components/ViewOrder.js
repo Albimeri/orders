@@ -17,10 +17,6 @@ export const ViewOrder = (props) => {
     return result;
   };
 
-  const selectedRestaurant = restaurants.find(
-    (restaurant) => restaurant.id === props.order.restaurantId
-  );
-
   return (
     <Modal
       ariaHideApp={false}
@@ -36,7 +32,7 @@ export const ViewOrder = (props) => {
       <div className="container">
         <div className="row">
           <div className="col-10">
-            <h1>{selectedRestaurant.name}</h1>
+            <h1>{props.order.restaurant.name}</h1>
           </div>
           <div
             className="col-2"

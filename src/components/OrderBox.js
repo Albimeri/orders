@@ -152,13 +152,7 @@ export const OrderBox = ({
             <div className="card-body">
               <div className="row">
                 <div className={isMyOrder(order) ? "col-6" : "col-9"}>
-                  <h5 className="card-title">
-                    {
-                      restaurants.find(
-                        (restaurant) => order.restaurantId === restaurant.id
-                      ).name
-                    }
-                  </h5>
+                  <h5 className="card-title">{order.restaurant.name}</h5>
                 </div>
                 <div className="col-3">{getStatusTag(order.status)}</div>
 
@@ -353,13 +347,7 @@ export const OrderBox = ({
           }}
         >
           <h5>
-            Are you sure you want te delete "
-            {
-              restaurants.find(
-                (restaurant) => restaurant.id === order.restaurantId
-              ).name
-            }
-            " order?
+            Are you sure you want te delete "{order.restaurant.name}" order?
           </h5>
           <br></br>
           <div>
