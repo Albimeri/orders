@@ -35,11 +35,11 @@ export const ViewOrder = (props) => {
     >
       <div className="container">
         <div className="row">
-          <div className="col-11">
+          <div className="col-10">
             <h1>{selectedRestaurant.name}</h1>
           </div>
           <div
-            className="col-1"
+            className="col-2"
             onClick={() => {
               props.setIsViewOrder(false);
             }}

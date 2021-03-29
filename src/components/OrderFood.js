@@ -28,10 +28,14 @@ export const OrderFood = (props) => {
       bottom: "auto",
       marginRight: "-50%",
       padding: "50px",
-      width: "600px",
+      width: "500px",
       transform: "translate(-50%, -50%)",
     },
   };
+
+  const me = props.order.guests.find(
+    (guest) => guest.id === props.myUserInfo.id
+  );
 
   const onSelectItem = (event, food) => {
     setSelectedFood(food);
@@ -90,53 +94,77 @@ export const OrderFood = (props) => {
       ariaHideApp={false}
       onRequestClose={() => props.setIsOrderFood(false)}
     >
-      <h1>{selectedRestaurant.name}</h1>
-      <div>
-        <Autocomplete
-          clearOnEscape
-          onChange={onSelectItem}
-          value={selectedFood}
-          clearOnBlur
-          id="combo-box-demo"
-          options={selectedRestaurant.menu}
-          getOptionLabel={(option) => `${option.title}  ${option.price} €`}
-          style={{ width: 500 }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              placeholder="Search Food"
-              variant="outlined"
+      <div className="container">
+        <div className="row">
+          <div className="col-10">
+            <h1>{selectedRestaurant.name}</h1>
+          </div>
+          <div
+            className="col-1"
+            onClick={() => {
+              props.setIsOrderFood(false);
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="26"
+              height="26"
+              fill="currentColor"
+              className="bi bi-x"
+              viewBox="0 0 16 16"
+            >
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-12">
+            <Autocomplete
+              clearOnEscape
+              onChange={onSelectItem}
+              value={selectedFood}
+              clearOnBlur
+              id="combo-box-demo"
+              options={selectedRestaurant.menu}
+              getOptionLabel={(option) => `${option.title}  ${option.price} €`}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Search Food"
+                  variant="outlined"
+                />
+              )}
             />
-          )}
-        />
-      </div>
-      <br></br>
-      <div>
-        <button
-          type="button"
-          disabled={!selectedFood}
-          className="btn btn-primary"
-          onClick={saveOrder}
-        >
-          Save
-        </button>
-        {props.order.guests.find((guest) => guest.id === props.myUserInfo.id)
-          .itemOrdered && (
+          </div>
+        </div>
+        <br></br>
+        <div>
           <button
             type="button"
-            className="btn btn-danger"
-            onClick={cancelOrder}
+            disabled={!selectedFood}
+            className="btn btn-primary"
+            onClick={saveOrder}
           >
-            Cancel Order
+            Save
           </button>
-        )}
-        <button
-          type="button"
-          className="btn btn-light"
-          onClick={() => props.setIsOrderFood(false)}
-        >
-          Cancel
-        </button>
+          {me && me.itemOrdered && (
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={cancelOrder}
+            >
+              Cancel Order
+            </button>
+          )}
+          <button
+            type="button"
+            className="btn btn-light"
+            onClick={() => props.setIsOrderFood(false)}
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </Modal>
   );

@@ -41,9 +41,9 @@ export const CreateOrder = (props) => {
     >
       <div className="container">
         <div className="row">
-          <h1 className="col-11">New Order</h1>
+          <h1 className="col-10">New Order</h1>
           <div
-            className="col-1"
+            className="col-2"
             onClick={() => {
               props.setModalIsOpen(false);
               setIsPublic(false);
