@@ -10,7 +10,7 @@ const db = firebase.firestore();
 export const OrderFood = (props) => {
   const [selectedFood, setSelectedFood] = useState(null);
 
-  useEffect(() => { 
+  useEffect(() => {
     setSelectedFood(getMyFood());
   }, []);
 
@@ -64,7 +64,7 @@ export const OrderFood = (props) => {
     props.setIsOrderFood(false);
   };
 
-  const cancelOrder = () => { 
+  const cancelOrder = () => {
     const order = { ...props.order };
     let selectedGuest = order.guests.find(
       (guest) => guest.id === props.myUserInfo.id
@@ -82,17 +82,13 @@ export const OrderFood = (props) => {
     (restaurant) => restaurant.id === props.order.restaurantId
   );
 
-  const canCancelOrder = ()=>{
-    const selectedGuest = props.order.guests.find((guest) => guest.id === props.myUserInfo.id);
-    return selectedGuest && selectedGuest.itemOrdered
-  }
-
   return (
     <Modal
       isOpen={true}
       contentLabel="Order View"
       style={customStyles}
       ariaHideApp={false}
+      onRequestClose={() => props.setIsOrderFood(false)}
     >
       <h1>{selectedRestaurant.name}</h1>
       <div>

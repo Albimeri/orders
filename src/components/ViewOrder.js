@@ -5,7 +5,7 @@ import { restaurants } from "../restaurants";
 export const ViewOrder = (props) => {
   const [guests, setGuests] = useState([]);
 
-  useEffect(() => { 
+  useEffect(() => {
     setGuests(props.order.guests.filter((guest) => guest.itemOrdered));
   }, [props.order]);
 
@@ -25,6 +25,7 @@ export const ViewOrder = (props) => {
     <Modal
       ariaHideApp={false}
       isOpen={true}
+      onRequestClose={() => props.setIsViewOrder(false)}
       contentLabel="Order View"
       style={{
         overlay: {

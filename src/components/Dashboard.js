@@ -66,7 +66,8 @@ const Dashboard = () => {
         let orders = [];
         querySnapshot.forEach((doc) => {
           if (doc.exists) {
-            orders.push(doc.data());
+            const order = doc.data();
+            orders.push(order);
           }
         });
         setOrders(orders);
