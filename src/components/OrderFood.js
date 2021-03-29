@@ -5,10 +5,14 @@ import { TextField } from "@material-ui/core";
 import firebase from "firebase";
 import { restaurants } from "../restaurants";
 import { OrderStatus } from "../constants/enums";
+import { handleOnKeyDownNumeric } from "./CommonHelpers";
 const db = firebase.firestore();
 
 export const OrderFood = (props) => {
   const [selectedFood, setSelectedFood] = useState(null);
+  const [customFood, setCustomFood] = useState({ title: "", price: null });
+  const [comment, setComment] = useState("");
+  const [isAddCustom, setIsAddCustom] = useState(false);
 
   useEffect(() => {
     setSelectedFood(getMyFood());
@@ -54,14 +58,18 @@ export const OrderFood = (props) => {
       (guest) => guest.id === props.myUserInfo.id
     );
     if (selectedGuest) {
-      selectedGuest.itemOrdered = selectedFood;
+      selectedGuest.itemOrdered = !isAddCustom
+        ? { ...selectedFood, comment }
+        : { ...customFood, price: parseInt(customFood.price, 10), comment };
       order.guests = [
         ...order.guests.filter((guest) => guest.id !== props.myUserInfo.id),
         selectedGuest,
       ];
     } else {
       selectedGuest = props.myUserInfo;
-      selectedGuest.itemOrdered = selectedFood;
+      selectedGuest.itemOrdered = !isAddCustom
+        ? { ...selectedFood, comment }
+        : { ...customFood, price: parseInt(customFood.price, 10), comment };
       order.guests = [...order.guests, selectedGuest];
     }
     db.collection("orders").doc(order.id).update(order);
@@ -85,6 +93,24 @@ export const OrderFood = (props) => {
   const selectedRestaurant = restaurants.find(
     (restaurant) => restaurant.id === props.order.restaurantId
   );
+
+  const handleCustomFoodTitle = (event) => {
+    setCustomFood((prevState) => ({ ...prevState, title: event.target.value }));
+  };
+
+  const handleCustomFoodPrice = (event) => {
+    setCustomFood((prevState) => ({ ...prevState, price: event.target.value }));
+  };
+
+  const canSave = () => {
+    let result = true;
+    if (isAddCustom) {
+      result = !(customFood.price && customFood.title);
+    } else {
+      result = !selectedFood;
+    }
+    return result;
+  };
 
   return (
     <Modal
@@ -118,31 +144,111 @@ export const OrderFood = (props) => {
           </div>
         </div>
 
+        {!isAddCustom && (
+          <div className="row">
+            <div className="col-12">
+              <Autocomplete
+                clearOnEscape
+                onChange={onSelectItem}
+                value={selectedFood}
+                clearOnBlur
+                id="combo-box-demo"
+                options={selectedRestaurant.menu}
+                getOptionLabel={(option) =>
+                  `${option.title}  ${option.price} €`
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Search Food"
+                    variant="outlined"
+                  />
+                )}
+              />
+            </div>
+          </div>
+        )}
+        {isAddCustom && (
+          <div className="row">
+            <div className="col-6">
+              Food
+              <input
+                type="text"
+                className="form-control"
+                onChange={handleCustomFoodTitle}
+                value={customFood.title}
+              />
+            </div>
+            <div className="col-6">
+              Price
+              <input
+                className="form-control"
+                type="number"
+                min="0"
+                onKeyDown={handleOnKeyDownNumeric}
+                onChange={handleCustomFoodPrice}
+                value={customFood.price}
+              />
+            </div>
+          </div>
+        )}
+
+        <br></br>
+
         <div className="row">
-          <div className="col-12">
-            <Autocomplete
-              clearOnEscape
-              onChange={onSelectItem}
-              value={selectedFood}
-              clearOnBlur
-              id="combo-box-demo"
-              options={selectedRestaurant.menu}
-              getOptionLabel={(option) => `${option.title}  ${option.price} €`}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Search Food"
-                  variant="outlined"
-                />
-              )}
-            />
+          <div className="col-6">
+            <div
+              className="form-check cursor-pointer"
+              onClick={() => setIsAddCustom(false)}
+            >
+              <input
+                className="form-check-input cursor-pointer"
+                type="radio"
+                checked={!isAddCustom}
+                onChange={() => {}}
+              />
+              <label className="form-check-label cursor-pointer">
+                Order from list
+              </label>
+            </div>
+          </div>
+          <div className="col-6">
+            <div
+              className="form-check cursor-pointer"
+              onClick={() => setIsAddCustom(true)}
+            >
+              <input
+                className="form-check-input cursor-pointer"
+                type="radio"
+                checked={isAddCustom}
+                onChange={() => {}}
+              />
+              <label className="form-check-label cursor-pointer">
+                Add custom item
+              </label>
+            </div>
           </div>
         </div>
+
+        <br></br>
+        {
+          <div className="row">
+            <div className="col-12">
+              Comment
+              <input
+                type="text"
+                className="form-control"
+                value={comment}
+                onChange={(event) => setComment(event.target.value)}
+              />
+            </div>
+          </div>
+        }
         <br></br>
         <div>
           <button
             type="button"
-            disabled={!selectedFood}
+            disabled={canSave()}
             className="btn btn-primary"
             onClick={saveOrder}
           >

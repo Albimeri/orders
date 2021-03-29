@@ -15,7 +15,7 @@ export const restaurants = [
       { title: "Beef Fajitas", id: 9, price: 4.2 },
       { title: "Falafel Fajitas", id: 10, price: 3.6 },
       { title: "Fried potato wedges sauce", id: 11, price: 1.7 },
-      { title: "Chicken Fajitas", id: 12, price: 3.9 },
+      { title: "Chicken Fajitas", id: 12, price: 2.9 },
       { title: "Crunchy Sticks Fajitas", id: 13, price: 3.5 },
       { title: "Curnch Chicken Salad", id: 14, price: 4.5 },
       { title: "Grill Chicken Salad", id: 15, price: 4.5 },
