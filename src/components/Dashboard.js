@@ -8,6 +8,7 @@ import { OrderFood } from "./OrderFood";
 import { ViewOrder } from "./ViewOrder";
 import { OrderBox } from "./OrderBox";
 import { OrderStatus } from "../constants/enums";
+import moment from "moment";
 
 const Dashboard = () => {
   const [error, setError] = useState("");
@@ -68,6 +69,15 @@ const Dashboard = () => {
           if (doc.exists) {
             const order = doc.data();
             orders.push(order);
+          }
+        });
+        const myOrders = orders.filter(
+          (item) => item.author.id === currentUser.uid
+        );
+        myOrders.forEach((item) => {
+          const duration = moment.duration(moment().diff(item.createdAt));
+          if (duration.asDays() > 1) {
+            db.collection("orders").doc(item.id).delete();
           }
         });
         setOrders(orders);

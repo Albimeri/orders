@@ -4,6 +4,7 @@ import { OrderStatus } from "../constants/enums";
 import { SelectUsers } from "./SelectUsers";
 import firebase from "firebase";
 import Modal from "react-modal";
+import Moment from "react-moment";
 const db = firebase.firestore();
 
 export const OrderBox = ({
@@ -14,8 +15,8 @@ export const OrderBox = ({
   allUsers,
   setIsViewOrder,
 }) => {
-  const [isDeletePromp, setIsDeletePrompt] = useState(false); 
-  
+  const [isDeletePromp, setIsDeletePrompt] = useState(false);
+
   const deleteOrder = (orderId) => {
     db.collection("orders")
       .doc(orderId)
@@ -47,7 +48,7 @@ export const OrderBox = ({
   const cancelOrder = (order, isCanceled) => {
     db.collection("orders")
       .doc(order.id)
-      .set({
+      .update({
         ...order,
         status: isCanceled ? OrderStatus.CANCELED : OrderStatus.ACTIVE,
       })
@@ -62,15 +63,15 @@ export const OrderBox = ({
   const closeOrder = (order, isClosed) => {
     db.collection("orders")
       .doc(order.id)
-      .set({
+      .update({
         ...order,
         status: isClosed ? OrderStatus.CLOSED : OrderStatus.ACTIVE,
       })
       .then(() => {
-        console.log("Document successfully written!");
+        console.log("Order successfully updated!");
       })
       .catch((error) => {
-        console.error("Error writing document: ", error);
+        console.error("Error updating order: ", error);
       });
   };
 
@@ -79,17 +80,17 @@ export const OrderBox = ({
       .doc(order.id)
       .set({ ...order, isPublic })
       .then(() => {
-        console.log("Document successfully written!");
+        console.log("Order successfully updated!");
       })
       .catch((error) => {
-        console.error("Error writing document: ", error);
+        console.error("Error updateding order: ", error);
       });
   };
 
   const setSelectedGuests = (guests, order) => {
     db.collection("orders")
       .doc(order.id)
-      .set({ ...order, guests })
+      .update({ ...order, guests })
       .then(() => {
         console.log("Document successfully written!");
       })
@@ -219,11 +220,15 @@ export const OrderBox = ({
                 </h6>
               </div>
               <p className="card-text">{getPeopleWhoOrdered(order.guests)}</p>
-              {/* <p className="card-text">
+              <p className="card-text">
                 <small className="text-muted">
-               
+                  Created{" "}
+                  <Moment fromNow ago interval={100000}>
+                    {new Date(order.createdAt)}
+                  </Moment>{" "}
+                  ago
                 </small>
-              </p> */}
+              </p>
               {isMyOrder(order) && order.status === OrderStatus.ACTIVE && (
                 <>
                   <div className="row">

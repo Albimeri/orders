@@ -60,7 +60,7 @@ export const OrderFood = (props) => {
       selectedGuest.itemOrdered = selectedFood;
       order.guests = [...order.guests, selectedGuest];
     }
-    db.collection("orders").doc(order.id).set(order);
+    db.collection("orders").doc(order.id).update(order);
     props.setIsOrderFood(false);
   };
 
@@ -74,7 +74,7 @@ export const OrderFood = (props) => {
       ...order.guests.filter((guest) => guest.id !== props.myUserInfo.id),
       selectedGuest,
     ];
-    db.collection("orders").doc(order.id).set(order);
+    db.collection("orders").doc(order.id).update(order);
     props.setIsOrderFood(false);
   };
 
