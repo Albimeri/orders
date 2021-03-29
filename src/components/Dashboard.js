@@ -134,6 +134,21 @@ const Dashboard = () => {
       });
   };
 
+  const canCreateOrder = () => {
+    const myOrders = orders.filter(
+      (order) => order.author.id === currentUser.uid
+    );
+    return myOrders.length > 2;
+  };
+
+  const tryCreateOrder = () => {
+    if (canCreateOrder()) {
+      alert("You can't create more than 3 orders at once");
+      return;
+    }
+    setModalIsOpen((prevState) => !prevState);
+  };
+
   return (
     <>
       <nav
@@ -185,7 +200,7 @@ const Dashboard = () => {
         {currentUser.emailVerified && (
           <button
             type="button"
-            onClick={() => setModalIsOpen((prevState) => !prevState)}
+            onClick={tryCreateOrder}
             className="btn btn-primary"
           >
             Create an Order
