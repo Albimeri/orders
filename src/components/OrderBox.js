@@ -270,18 +270,19 @@ export const OrderBox = ({
                     <>
                       <br></br>
                       <div className="row">
-                        <SelectUsers
-                          users={allUsers.filter(
-                            (user) => user.id !== myUserInfo.id
-                          )}
-                          setSelectedGuests={(guests) =>
-                            setSelectedGuests(guests, order)
-                          }
-                          width={"100%"}
-                          defaultValue={order.guests.filter(
-                            (guest) => guest.id !== order.author.id
-                          )}
-                        />
+                        <div className="col-12">
+                          <SelectUsers
+                            users={allUsers.filter(
+                              (user) => user.id !== myUserInfo.id
+                            )}
+                            setSelectedGuests={(guests) =>
+                              setSelectedGuests(guests, order)
+                            }
+                            defaultValue={order.guests.filter(
+                              (guest) => guest.id !== order.author.id
+                            )}
+                          />
+                        </div>
                       </div>
                     </>
                   )}

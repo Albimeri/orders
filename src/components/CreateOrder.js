@@ -71,7 +71,6 @@ export const CreateOrder = (props) => {
               id="combo-box-demo"
               options={restaurants}
               getOptionLabel={(option) => option.name}
-              style={{ width: "100%" }}
               renderInput={(params) => (
                 <TextField
                   {...params}

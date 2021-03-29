@@ -77,14 +77,14 @@ export const ViewOrder = (props) => {
                         {guest.name} {guest.lastName}
                       </td>
                       <td>{guest.itemOrdered.title}</td>
-                      <td>{guest.itemOrdered.price}</td>
+                      <td>{guest.itemOrdered.price} €</td>
                     </tr>
                   </>
                 ))}
               </tbody>
             </table>
             <p>
-              <b>Total price:</b> {getTotal()}
+              <b>Total price:</b> {getTotal()} €
             </p>
           </div>
         </div>
