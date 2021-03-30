@@ -182,14 +182,24 @@ const Dashboard = () => {
               <h1 className="display-4">Welcome {myUserInfo.name}</h1>
             )}
             {myUserInfo && (
-              <p className="lead">
-                You just created an account. You should shortly receive an email
-                with the activation link on this email: "{myUserInfo.email}".
-              </p>
+              <>
+                <p className="lead">
+                  You just created an account. You should shortly receive an
+                  email with the activation link on this email: "
+                  {myUserInfo.email}".
+                </p>
+                <p className="lead">
+                  Please activate your account in order to continue.
+                </p>
+                <button
+                  type="button"
+                  className="btn btn-primary cursor-pointer"
+                  onClick={currentUser.sendEmailVerification}
+                >
+                  Resend Link
+                </button>
+              </>
             )}
-            <p className="lead">
-              Please activate your account in order to continue.
-            </p>
           </>
         )}
         {currentUser.emailVerified && (

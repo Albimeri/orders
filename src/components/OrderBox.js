@@ -341,7 +341,6 @@ export const OrderBox = ({
               bottom: "auto",
               marginRight: "-50%",
               padding: "50px",
-              width: "600px",
               transform: "translate(-50%, -50%)",
             },
           }}

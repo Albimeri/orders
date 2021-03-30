@@ -15,6 +15,7 @@ export const OrderFood = (props) => {
 
   useEffect(() => {
     setSelectedFood(getMyFood());
+    setComment(getMyFood()?.comment);
   }, []);
 
   useEffect(() => {
@@ -61,8 +62,13 @@ export const OrderFood = (props) => {
     );
     if (selectedGuest) {
       selectedGuest.itemOrdered = !isAddCustom
-        ? { ...selectedFood, comment }
-        : { ...customFood, price: parseInt(customFood.price, 10), comment };
+        ? { ...selectedFood, comment, isPaid: false }
+        : {
+            ...customFood,
+            price: parseFloat(customFood.price),
+            comment,
+            isPaid: false,
+          };
       order.guests = [
         ...order.guests.filter((guest) => guest.id !== props.myUserInfo.id),
         selectedGuest,
@@ -70,8 +76,13 @@ export const OrderFood = (props) => {
     } else {
       selectedGuest = props.myUserInfo;
       selectedGuest.itemOrdered = !isAddCustom
-        ? { ...selectedFood, comment }
-        : { ...customFood, price: parseInt(customFood.price, 10), comment };
+        ? { ...selectedFood, comment, isPaid: false }
+        : {
+            ...customFood,
+            price: parseFloat(customFood.price),
+            comment,
+            isPaid: false,
+          };
       order.guests = [...order.guests, selectedGuest];
     }
     db.collection("orders").doc(order.id).update(order);
@@ -193,42 +204,46 @@ export const OrderFood = (props) => {
 
         <br></br>
 
-        <div className="row">
-          <div className="col-6">
-            <div
-              className="form-check cursor-pointer"
-              onClick={() => setIsAddCustom(false)}
-            >
-              <input
-                className="form-check-input cursor-pointer"
-                type="radio"
-                checked={!isAddCustom}
-                onChange={() => {}}
-              />
-              <label className="form-check-label cursor-pointer">
-                Order from list
-              </label>
+        {props.order.restaurant.menu.length > 0 && (
+          <>
+            <div className="row">
+              <div className="col-6">
+                <div
+                  className="form-check cursor-pointer"
+                  onClick={() => setIsAddCustom(false)}
+                >
+                  <input
+                    className="form-check-input cursor-pointer"
+                    type="radio"
+                    checked={!isAddCustom}
+                    onChange={() => {}}
+                  />
+                  <label className="form-check-label cursor-pointer">
+                    Order from list
+                  </label>
+                </div>
+              </div>
+              <div className="col-6">
+                <div
+                  className="form-check cursor-pointer"
+                  onClick={() => setIsAddCustom(true)}
+                >
+                  <input
+                    className="form-check-input cursor-pointer"
+                    type="radio"
+                    checked={isAddCustom}
+                    onChange={() => {}}
+                  />
+                  <label className="form-check-label cursor-pointer">
+                    Add custom item
+                  </label>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="col-6">
-            <div
-              className="form-check cursor-pointer"
-              onClick={() => setIsAddCustom(true)}
-            >
-              <input
-                className="form-check-input cursor-pointer"
-                type="radio"
-                checked={isAddCustom}
-                onChange={() => {}}
-              />
-              <label className="form-check-label cursor-pointer">
-                Add custom item
-              </label>
-            </div>
-          </div>
-        </div>
+            <br></br>
+          </>
+        )}
 
-        <br></br>
         {
           <div className="row">
             <div className="col-12">

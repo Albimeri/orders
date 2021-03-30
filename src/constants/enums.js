@@ -11,8 +11,6 @@ export const Companies = {
 };
 
 export const KeyCodes = {
-  PERIOD: 190,
-  NUMPAD_PERIOD: 110,
   MINUS: 189,
   NUMPAD_SUBTRACT: 109,
   NUMPAD_ADD: 107,

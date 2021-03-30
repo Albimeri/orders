@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { restaurants } from "../restaurants";
+import firebase from "firebase";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
+const db = firebase.firestore();
 
 export const ViewOrder = (props) => {
   const [guests, setGuests] = useState([]);
@@ -15,6 +18,21 @@ export const ViewOrder = (props) => {
       .filter((guest) => guest.itemOrdered)
       .forEach((guest) => (result += guest.itemOrdered.price));
     return result;
+  };
+
+  const handleSelect = (isPaid, guest) => {
+    const order = { ...props.order };
+    const selectedGeust = order.guests.find((item) => item.id === guest.id);
+    selectedGeust.itemOrdered.isPaid = isPaid === "Yes";
+    db.collection("orders")
+      .doc(props.order.id)
+      .update(order)
+      .then(() => {
+        console.log("isPaid successfully written!");
+      })
+      .catch((error) => {
+        console.error("isPaid writing document: ", error);
+      });
   };
 
   return (
@@ -61,7 +79,9 @@ export const ViewOrder = (props) => {
                   <th scope="col">#</th>
                   <th scope="col">Name</th>
                   <th scope="col">Item</th>
+                  <th scope="col">Comment</th>
                   <th scope="col">Price</th>
+                  <th scope="col">Is Paid</th>
                 </tr>
               </thead>
               <tbody>
@@ -73,7 +93,21 @@ export const ViewOrder = (props) => {
                         {guest.name} {guest.lastName}
                       </td>
                       <td>{guest.itemOrdered.title}</td>
+                      <td>{guest.itemOrdered.comment}</td>
                       <td>{guest.itemOrdered.price} €</td>
+                      <td>
+                        <DropdownButton
+                          onSelect={(event) => handleSelect(event, guest)}
+                          title={guest.itemOrdered.isPaid ? "Yes" : "No"}
+                        >
+                          <Dropdown.Item key={1} eventKey="Yes">
+                            Yes
+                          </Dropdown.Item>
+                          <Dropdown.Item key={2} eventKey="No">
+                            No
+                          </Dropdown.Item>
+                        </DropdownButton>
+                      </td>
                     </tr>
                   </>
                 ))}
