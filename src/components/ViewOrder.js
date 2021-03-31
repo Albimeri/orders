@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import firebase from "firebase";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
 const db = firebase.firestore();
 
 export const ViewOrder = (props) => {
@@ -20,10 +18,10 @@ export const ViewOrder = (props) => {
     return result;
   };
 
-  const handleSelect = (isPaid, guest) => {
+  const handleSelect = (guest) => {
     const order = { ...props.order };
     const selectedGeust = order.guests.find((item) => item.id === guest.id);
-    selectedGeust.itemOrdered.isPaid = isPaid === "Yes";
+    selectedGeust.itemOrdered.isPaid = !guest.itemOrdered.isPaid;
     db.collection("orders")
       .doc(props.order.id)
       .update(order)
@@ -96,17 +94,19 @@ export const ViewOrder = (props) => {
                       <td>{guest.itemOrdered.comment}</td>
                       <td>{guest.itemOrdered.price} €</td>
                       <td>
-                        <DropdownButton
-                          onSelect={(event) => handleSelect(event, guest)}
-                          title={guest.itemOrdered.isPaid ? "Yes" : "No"}
-                        >
-                          <Dropdown.Item key={1} eventKey="Yes">
-                            Yes
-                          </Dropdown.Item>
-                          <Dropdown.Item key={2} eventKey="No">
-                            No
-                          </Dropdown.Item>
-                        </DropdownButton>
+                        {props.order.author.id === props.myUserInfo.id && (
+                          <div class="form-check">
+                            <input
+                              onChange={(event) => handleSelect(guest)}
+                              class="form-check-input"
+                              type="checkbox"
+                              checked={guest.itemOrdered.isPaid}
+                            />
+                          </div>
+                        )}
+                        {props.order.author.id !== props.myUserInfo.id && (
+                          <p>{guest.itemOrdered.isPaid ? "Yes" : "No"}</p>
+                        )}
                       </td>
                     </tr>
                   </>
