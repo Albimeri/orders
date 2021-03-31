@@ -121,4 +121,23 @@ export const restaurants = [
       { title: "Pizza chicken broccoli (e madhe)", id: 51, price: 7 },
     ],
   },
+  {
+    id: 3,
+    name: "Rockuzine",
+    number: "0",
+    menu: [
+      { title: "Risoto pule me perime", id: 1, price: 3.5 },
+      { title: "Risoto viqi me perime", id: 2, price: 3.8 },
+      { title: "Sendviq pule", id: 3, price: 2.8 },
+      { title: "Fajitas pule", id: 4, price: 3.2 },
+      { title: "Fajitas viqi", id: 5, price: 3.5 },
+      { title: "Burger klasik", id: 6, price: 2.2 },
+      { title: "Burger pule", id: 7, price: 2.5 },
+      { title: "Burger rockuzine", id: 8, price: 2.8 },
+      { title: "Qofte pule", id: 9, price: 3.9 },
+      { title: "Qofte viqi", id: 10, price: 3.9 },
+      { title: "Chicken fingers", id: 11, price: 3.9 },
+      { title: "Llokuma", id: 12, price: 2.0 },
+    ],
+  },
 ];
