@@ -88,9 +88,6 @@ const Dashboard = () => {
             orders.push(order);
           }
         });
-        debugger;
-        // db.collection("orders").doc(item.id).delete();
-
         setOrders(orders);
       });
     return () => {
