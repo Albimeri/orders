@@ -44,6 +44,23 @@ const Dashboard = () => {
     fetchData();
   }, [myUserInfo]);
 
+  useEffect(() => {
+    if (orders.length === 0) {
+      return;
+    }
+    const batch = db.batch();
+    orders.forEach((item) => {
+      const hours = moment
+        .duration(moment().diff(moment(item.createdAt)))
+        .asHours();
+      if (hours > 5) {
+        const toRemoveOrder = db.collection("orders").doc(item.id);
+        batch.delete(toRemoveOrder);
+      }
+    });
+    batch.commit();
+  }, [orders]);
+
   const fetchData = async () => {
     if (!myUserInfo) {
       return;
@@ -71,15 +88,9 @@ const Dashboard = () => {
             orders.push(order);
           }
         });
-        const myOrders = orders.filter(
-          (item) => item.author.id === currentUser.uid
-        );
-        myOrders.forEach((item) => {
-          const duration = moment.duration(moment().diff(item.createdAt));
-          if (duration.asDays() > 1) {
-            db.collection("orders").doc(item.id).delete();
-          }
-        });
+        debugger;
+        // db.collection("orders").doc(item.id).delete();
+
         setOrders(orders);
       });
     return () => {
