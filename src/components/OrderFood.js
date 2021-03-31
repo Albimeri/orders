@@ -62,11 +62,11 @@ export const OrderFood = (props) => {
     );
     if (selectedGuest) {
       selectedGuest.itemOrdered = !isAddCustom
-        ? { ...selectedFood, comment, isPaid: false }
+        ? { ...selectedFood, comment: comment || "", isPaid: false }
         : {
             ...customFood,
             price: parseFloat(customFood.price),
-            comment,
+            comment: comment || "",
             isPaid: false,
           };
       order.guests = [
@@ -80,7 +80,7 @@ export const OrderFood = (props) => {
         : {
             ...customFood,
             price: parseFloat(customFood.price),
-            comment,
+            comment: comment || "",
             isPaid: false,
           };
       order.guests = [...order.guests, selectedGuest];
