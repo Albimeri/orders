@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
@@ -17,6 +17,13 @@ const Signup = () => {
   const { signUp } = useAuth();
   const history = useHistory();
   const db = firebase.firestore();
+  const { currentUser } = useAuth();
+
+  useEffect(() => {
+    if (currentUser) {
+      history.push("/");
+    }
+  }, [currentUser]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

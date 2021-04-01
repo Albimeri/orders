@@ -19,6 +19,7 @@ const App = () => {
             <Route path="/signup" component={Signup} />
             <Route path="/login" component={Login} />
             <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="*" component={Login} />
           </Switch>
           <footer
             className="text-center text-white fixed-bottom "
