@@ -140,4 +140,51 @@ export const restaurants = [
       { title: "Llokuma", id: 12, price: 2.0 },
     ],
   },
+  {
+    id: 4,
+
+    name: "Burger JETA",
+
+    number: "044-295-005",
+
+    menu: [
+      { title: "Hamburger", id: 1, price: 1 },
+
+      { title: "Chicken Burger", id: 2, price: 1.5 },
+
+      { title: "Cheese Burger", id: 3, price: 1.5 },
+
+      { title: "Hamburger me ve", id: 4, price: 1.3 },
+
+      { title: "Double Burger", id: 5, price: 2 },
+
+      { title: "Hamburger + Pomfrit + Coca Cola", id: 6, price: 2.5 },
+
+      { title: "Pleskavicë", id: 7, price: 2.5 },
+
+      { title: "Sandwich Pule", id: 8, price: 1.3 },
+
+      { title: "Qofte Sharri", id: 9, price: 3 },
+
+      { title: "Qofte 5 copa", id: 10, price: 1.5 },
+
+      { title: "Qofte 10 copa", id: 11, price: 3 },
+
+      { title: "Tost", id: 12, price: 1 },
+
+      { title: "Doner në pjatë", id: 13, price: 2 },
+
+      { title: "Doner në bukë", id: 14, price: 2 },
+
+      { title: "Doner në petë", id: 15, price: 2 },
+
+      { title: "File Pule", id: 16, price: 2.5 },
+
+      { title: "Suxhuk Shtëpie", id: 17, price: 1.5 },
+
+      { title: "Kombinim File Pule + Doner", id: 18, price: 3 },
+
+      { title: "Mish Kombinim", id: 19, price: 5 },
+    ],
+  },
 ];
