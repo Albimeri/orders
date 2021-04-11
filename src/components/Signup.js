@@ -17,13 +17,6 @@ const Signup = () => {
   const { signUp } = useAuth();
   const history = useHistory();
   const db = firebase.firestore();
-  const { currentUser } = useAuth();
-
-  useEffect(() => {
-    if (currentUser) {
-      history.push("/");
-    }
-  }, [currentUser]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,7 +38,6 @@ const Signup = () => {
         companyId: Companies.SOLABORATE,
         email: user.email,
       });
-      history.push("/");
     } catch (err) {
       setError("Failed to create an account");
     }
@@ -58,6 +50,7 @@ const Signup = () => {
       .set(userDetails)
       .then(() => {
         console.log("User created!");
+        history.push("/");
       })
       .catch((error) => {
         console.error("User creation error: ", error);

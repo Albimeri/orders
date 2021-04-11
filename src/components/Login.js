@@ -11,13 +11,6 @@ const Login = () => {
   const [isLoading, setLoading] = useState(false);
   const { login } = useAuth();
   const history = useHistory();
-  const { currentUser } = useAuth();
-
-  useEffect(() => {
-    if (currentUser) {
-      history.push("/");
-    }
-  }, [currentUser]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
