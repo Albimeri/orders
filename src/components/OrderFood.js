@@ -62,12 +62,12 @@ export const OrderFood = (props) => {
     );
     if (selectedGuest) {
       selectedGuest.itemOrdered = !isAddCustom
-        ? { ...selectedFood, comment: comment || "", isPaid: false }
+        ? { ...selectedFood, comment: comment || "", paid: 0 }
         : {
             ...customFood,
             price: parseFloat(customFood.price),
             comment: comment || "",
-            isPaid: false,
+            paid: 0,
           };
       order.guests = [
         ...order.guests.filter((guest) => guest.id !== props.myUserInfo.id),
@@ -76,12 +76,12 @@ export const OrderFood = (props) => {
     } else {
       selectedGuest = props.myUserInfo;
       selectedGuest.itemOrdered = !isAddCustom
-        ? { ...selectedFood, comment, isPaid: false }
+        ? { ...selectedFood, comment, paid: 0 }
         : {
             ...customFood,
             price: parseFloat(customFood.price),
             comment: comment || "",
-            isPaid: false,
+            paid: 0,
           };
       order.guests = [...order.guests, selectedGuest];
     }

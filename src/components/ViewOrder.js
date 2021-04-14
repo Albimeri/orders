@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import firebase from "firebase";
+import { handleOnKeyDownNumeric } from "./CommonHelpers";
 const db = firebase.firestore();
 
 export const ViewOrder = (props) => {
@@ -18,10 +19,14 @@ export const ViewOrder = (props) => {
     return result;
   };
 
-  const handleSelect = (guest) => {
+  const handleChange = (event, guest) => {
+    const { value } = event.target;
     const order = { ...props.order };
     const selectedGeust = order.guests.find((item) => item.id === guest.id);
-    selectedGeust.itemOrdered.isPaid = !guest.itemOrdered.isPaid;
+    selectedGeust.itemOrdered.paid = value;
+    if (value[value.length - 1] === ".") {
+      return;
+    }
     db.collection("orders")
       .doc(props.order.id)
       .update(order)
@@ -79,7 +84,8 @@ export const ViewOrder = (props) => {
                   <th scope="col">Item</th>
                   <th scope="col">Comment</th>
                   <th scope="col">Price</th>
-                  <th scope="col">Is Paid</th>
+                  <th scope="col">Paid</th>
+                  <th scope="col">Change</th>
                 </tr>
               </thead>
               <tbody>
@@ -94,19 +100,20 @@ export const ViewOrder = (props) => {
                       <td>{guest.itemOrdered.comment}</td>
                       <td>{guest.itemOrdered.price} €</td>
                       <td>
-                        {props.order.author.id === props.myUserInfo.id && (
-                          <div class="form-check">
-                            <input
-                              onChange={(event) => handleSelect(guest)}
-                              class="form-check-input"
-                              type="checkbox"
-                              checked={guest.itemOrdered.isPaid}
-                            />
-                          </div>
-                        )}
-                        {props.order.author.id !== props.myUserInfo.id && (
-                          <p>{guest.itemOrdered.isPaid ? "Yes" : "No"}</p>
-                        )}
+                        <input
+                          className="form-control"
+                          type="number"
+                          min="0"
+                          onKeyDown={handleOnKeyDownNumeric}
+                          onChange={(event) => handleChange(event, guest)}
+                          value={guest.itemOrdered.paid}
+                        />
+                      </td>
+                      <td>
+                        {(
+                          guest.itemOrdered.paid - guest.itemOrdered.price
+                        ).toFixed(2)}
+                        €
                       </td>
                     </tr>
                   </>
